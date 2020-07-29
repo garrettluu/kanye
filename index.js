@@ -4,14 +4,21 @@ const Discord = require('discord.js');
 
 const client = new Discord.Client();
 
+const axios = require('axios');
+const KANYE_REST = "https://api.kanye.rest/";
+
+require('dotenv').config();
+
 client.on('ready', () => {
   console.log("Hello world!");
 });
 
-client.on('message', message => {
-  if (message.content === 'ping') {
-    message.channel.send('pong');
+client.on('message', async (message) => {
+  if (message.content === '!kanye') {
+    const res = await axios.get(KANYE_REST);
+    const quote = res.data.quote;
+    message.channel.send(quote);
   }
 });
 
-client.login('NzM3ODA4MDU2ODg4MzI4MzEy.XyCvTA.C8H0snsMAEb68yHeYHGpaKHB7w0');
+client.login(process.env.BOT_TOKEN);
